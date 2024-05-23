@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | {{user}} Profile {% endblock %}
+{% block body %}
+<div class='container'>
+    <div class="row">
+        <div class="col-md-2" style="padding: 0.5em 0 0 2em;">
+            <img src="{{profile.pfp.url}}"
+                alt='profile pic' style="border-radius: 5em; border: white; width: 140px; height: 140px;">
+        </div>
+        <div class="col-md-4" style="color: #eb6d6d; padding-top: 3em;">
+            <h2 style="padding-bottom: 10px">@{{viewUser}}</h2>
+            <h6 style="color: black;">&ensp;&ensp;{{profile.bio}}</h6>
+        </div>
+        <div class="col-md-2" align="center" style="color: #eb6d6d; padding-top: 3em;">
+            <h5>Followers:</h5>
+            <h5><a href="#" style="text-decoration: none; color: black;">{{followersCount}}</a></h5>
+        </div>
+        <div class="col-md-2" align="center" style="color: #eb6d6d; padding-top: 3em;">
+            <h5>Following:</h5>
+            <h5><a href="#" style="text-decoration: none; color: black;">{{followingCount}}</a></h5>
+        </div>
+        {% if is_user%} 
+            {% if not is_following %}
+            <div class="col-md-2" align="center" style="color: #eb6d6d; padding-top: 3em;">
+                <a href="{% url 'follow' viewUser %}" style="text-decoration: none; color: black;"><button class="btn btn-danger text-light">Follow</button></a>
+            </div>
+            {% else %}
+            <div class="col-md-2" align="center" style="color: #eb6d6d; padding-top: 3em;">
+                <a href="{% url 'follow' viewUser %}" style="text-decoration: none; color: black;"><button class="btn btn-danger text-light">Unfollow</button></a>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    <hr>
+    <div class='row'>
+        <div class="container" align="center">
+            <div class="col">
+                {% for x in post %}
+                {% if x.fileType == 'None' %}
+                <div class="card" style="height: auto; width: 100vh; margin-bottom: 2em; background-color: #fac6c6;">
+                    {% else %}
+                    <div class="card"
+                        style="height: 70vh; width: 100vh; margin-bottom: 2em; background-color: #fac6c6;">
+                        {% endif %}
+                        <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
+                            {% if x.fileType == 'Image' %}
+                            <img src="{{x.file.url}}" class="img-fluid" />
+                            {% elif x.fileType == 'Video' %}
+                            <div class="ratio ratio-16x9">
+                                <video src="{{x.file.url}}" class="object-fit-contain" playsinline autoplay muted
+                                    loop></video>
+                            </div>
+                            {% else %}
+                            {% endif %}
+                            <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><a
+                                    href="{% url 'profile' x.user.username %}">@{{x.user.username}}</a></h5>
+                            <h6 class="card-title">Community: <a
+                                    href="{% url 'community' x.community.name %}">{{x.community.name}}</a></h6>
+                            <p class="card-text">{{x.caption}}</p>
+                            <a href="{% url 'likes' x.pk %}" style="text-decoration: none;"><button
+                                    class="submit btn btn-danger" data-mdb-ripple-init><i
+                                        class="bi bi-heart"></i></button></a> <span class="count">{{x.likesCount}}
+                                Likes</span> &ensp; &ensp;
+                            <a href="{% url 'comments' x.pk %}" style="text-decoration: none;"><button
+                                    class="submit btn btn-info" data-mdb-ripple-init><i
+                                        class="bi bi-chat-dots"></i></button> </a><span
+                                class="count">{{x.commentsCount}} Comments</span> &ensp; &ensp;
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

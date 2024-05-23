@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Login {% endblock %}
+{% block body %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card" style='background-color: #eb6d6d; color: white'>
+        <div class="card-header p-4" align='center'>
+          <h3>Create New User</h3>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+            </div>
+            <div class="input-group mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="fname" name="fname" placeholder="Firstname">
+              <input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname">
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter new password" aria-describedby="button-addon2">
+                <span id="check" class="btn btn-outline-warning bi bi-eye-fill" onclick="fun(this)"></span>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm password" aria-describedby="button-addon2">
+                <span id="check" class="btn btn-outline-warning bi bi-eye-fill" onclick="fun(this)"></span>
+            </div>
+            <div align="center">
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  function fun(btn){
+      btn.classList.toggle('bi-eye-fill')
+      btn.classList.toggle('bi-eye-slash')
+      let pass1=document.getElementById('password')
+      let pass2=document.getElementById('password2')
+      if(pass1.type=='password'){
+          pass1.type='text'
+      } else{
+          pass1.type='password'
+      }
+      if(pass2.type=='password'){
+          pass2.type='text'
+      } else{
+          pass2.type='password'
+      }
+  }
+</script>
+{% endblock %}

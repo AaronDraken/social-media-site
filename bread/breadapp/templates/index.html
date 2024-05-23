@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Home {% endblock %}
+{% block body %}
+<style>
+    .count{
+        font-size: smaller;
+    }
+    body{
+        overflow: hidden;
+    }
+</style>
+<div class="container-fluid" style="height: 100%;">
+    <div class="row" style="height: 88vh;">
+        <!-- sidebar -->
+        <div class="col-md-3" style="border-right: 1px solid black; background-color: #eb6d6d">
+            <div class="flex-shrink-0 p-3" style="width: 280px; height: 100%; top: 0; bottom: 0;">
+                <ul class="list-unstyled ps-0">
+                    <h5 style="color: #FFFFFF; margin-bottom: 1em; margin-top: 1em;">Sort</h5>
+                    <li class="mb-1">
+                        <!-- filter url -->
+                        <a href="/"><button
+                            class="btn btn-dark d-inline-flex align-items-center rounded border-0">
+                            Home
+                        </button></a>
+                    </li>
+                    <li class="mb-1">
+                        <!-- filter url -->
+                        <a href="/popular"><button
+                            class="btn btn-dark d-inline-flex align-items-center rounded border-0">
+                            Popular
+                        </button></a>
+                    </li>
+                    <li class="mb-1">
+                        <!-- filter url -->
+                        <a href="/explore/All"><button
+                            class="btn btn-dark d-inline-flex align-items-center rounded border-0">
+                            All
+                        </button></a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <h5 style="color: #FFFFFF; margin-bottom: 1em; margin-top: 1em;">Topics</h5>
+                    <li class="mb-1">
+                        <a href="/explore/Games"><button
+                            class="btn btn-dark d-inline-flex align-items-center rounded border-0">
+                            Games
+                        </button></a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/explore/News"><button
+                            class="btn btn-dark d-inline-flex align-items-center rounded border-0">
+                            News
+                        </button></a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/explore/Entertainment"><button
+                            class="btn btn-dark d-inline-flex align-items-center rounded border-0">
+                            Entertainment
+                        </button></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- sidebar -->
+
+        <!-- Posts -->
+        <div class="col-md-9" align="center" style="margin-top: 0.5em;">
+            <div class="container overflow-auto" style="height: 87vh; width: 100%;">
+                {% for x in post %}
+                {% if x.fileType == 'None' %}
+                <div class="card" style="height: auto; width: 100vh; margin-bottom: 2em; background-color: #fac6c6;">
+                {% else %}
+                <div class="card" style="height: 70vh; width: 100vh; margin-bottom: 2em; background-color: #fac6c6;">
+                {% endif %}
+                    <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
+                        {% if x.fileType == 'Image' %}
+                        <img src="{{x.file.url}}" class="img-fluid" />
+                        {% elif x.fileType == 'Video' %}
+                        <div class="ratio ratio-16x9">
+                            <video src="{{x.file.url}}" class="object-fit-contain" playsinline autoplay muted loop></video>
+                        </div>
+                        {% else %}
+                        {% endif %}
+                        <a href="#!">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'profile' x.user.username %}">@{{x.user.username}}</a></h5>
+                        <h6 class="card-title">Community: <a href="{% url 'community' x.community.name %}">{{x.community.name}}</a></h6>
+                        <p class="card-text">{{x.caption}}</p>
+                        <a href="{% url 'likes' x.pk %}" style="text-decoration: none;"><button class="submit btn btn-danger" data-mdb-ripple-init><i class="bi bi-heart"></i></button></a> <span class="count">{{x.likesCount}} Likes</span>  &ensp;  &ensp;
+                        <a href="{% url 'comments' x.pk %}" style="text-decoration: none;"><button class="submit btn btn-info" data-mdb-ripple-init><i class="bi bi-chat-dots"></i></button> </a><span class="count">{{x.commentsCount}} Comments</span>  &ensp;  &ensp;
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+            <!-- Posts -->
+        </div>
+    </div>
+{% endblock %}

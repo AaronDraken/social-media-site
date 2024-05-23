@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Comments {% endblock %}
+{% block body %}
+<style>
+    body {
+        background-color: #f8dbdb;
+        overflow: hidden;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <h4 style="color: #eb6d6d; padding-top: 1em;" align='center'>Comments</h4>
+        <hr style="color: #eb6d6d;">
+    </div>
+
+    <div class="container">
+        <div class="row overflow-auto">
+            <ul class="list-group list-group-light">
+                {% for x in comments %}
+                <li class="list-group-item d-flex justify-content-between align-items-center text-light"
+                    style="background-color: #eb6d6d; margin-right: 5em; margin-left: 5em;">
+                    <div class="d-flex align-items-center" style="margin-left: 1em;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST6MGhoHS2Jb97DB13B3EyolqW6Q6Y0Wy6s7WxXrE1_g&s" alt=""
+                                style="width: 45px; height: 45px" class="rounded-circle" />
+                        <div class="ms-3">
+                            <p class="fw-bold mb-1">
+                                {{x.user.username}}
+                            </p>
+                            <p class="mb-0 ">
+                                {{x.comment}}
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class=" container sticky-bottom" align="center" style="position: absolute; bottom: 0; right: 0; left: 0;">
+        <div class="row" style="margin-left: 1px;">
+            <div class="container bg-light py-3" style="border-top: 1px solid black;">
+                <div class="container">
+                    <form class="row g-3 align-items-center" method="post" action="">
+                        {% csrf_token %}
+                        <div class="col">
+                            <input type="text" class="form-control" name="comment" placeholder="Type your message..."
+                                autocomplete="off">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary rounded-circle"><i
+                                    class="bi bi-telegram"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

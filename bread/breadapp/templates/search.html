@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Notifications {% endblock %}
+{% block body %}
+
+<style>
+    body {
+        background-color: #f8dbdb;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <h4 style="color: #eb6d6d; padding-top: 1em;" align='center'>Notifications</h4>
+        <hr style="color: #eb6d6d;">
+    </div>
+
+    <div class="container">
+        <h6 style="color: #eb6d6d; padding-top: 1em;" align='left'>Users</h6>
+        <div class="row">
+            <ul class="list-group list-group-light">
+                {% for x in profile %}
+                {% for i in x%}
+                <li class="list-group-item d-flex justify-content-between align-items-center text-light"
+                style="background-color: #ffa4a4;">
+                <div class="d-flex align-items-center" style="margin-left: 1em;">
+                    <img src="{{i.pfp.url}}" alt=""
+                    style="width: 45px; height: 45px" class="rounded-circle" />
+                    <div class="ms-3">
+                            <p class="fw-bold mb-1">{{i.user.username}}</p>
+                            <p class="mb-0 ">{{i.user.first_name}} {{i.user.last_name}}</p>
+                        </div>
+                    </div>
+                    <a class="btn btn-danger btn-rounded btn-sm" href="{% url 'profile' i.user.username %}" role="button"
+                        style="margin-right: 1em;">View</a>
+                </li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        <h6 style="color: #eb6d6d; padding-top: 1em;" align='left'>Communities</h6>
+        <div class="row">
+            <ul class="list-group list-group-light">
+                {% for x in community %}
+                <li class="list-group-item d-flex justify-content-between align-items-center text-light"
+                style="background-color: #ffa4a4;">
+                <div class="d-flex align-items-center" style="margin-left: 1em;">
+                    <img src="/media/{{x.img.url}}" alt=""
+                    style="width: 45px; height: 45px" class="rounded-circle" />
+                    <div class="ms-3">
+                            <p class="fw-bold mb-1">{{x.name}}</p>
+                            <p class="mb-0 ">{{x.category}}</p>
+                        </div>
+                    </div>
+                    <a class="btn btn-danger btn-rounded btn-sm" href="{% url 'community' x.name %}" role="button"
+                        style="margin-right: 1em;">View</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

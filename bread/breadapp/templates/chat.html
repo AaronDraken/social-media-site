@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Chats {% endblock %}
+{% block body %}
+<style>
+  .sent p {
+    display: inline;
+    padding: 0.5em 1em 0.5em 1em;
+    margin: 5px;
+    background-color: rgb(57, 240, 66);
+    border-radius: 1em;
+  }
+
+  .received p {
+    display: inline;
+    padding: 0.5em 1em 0.5em 1em;
+    margin: 5px;
+    background-color: rgb(145, 145, 145);
+    border-radius: 1em;
+  }
+
+  .time {
+    padding: 5px;
+  }
+</style>
+
+<div class="container-fluid" style="height: 100%;  overflow: hidden;">
+  <div class="row" style="height: 88vh;">
+    <div class="col-md-4" style="background-color: #eb6d6d; border-right: 1px solid black;">
+      
+      <div class="row sticky-top" style="height: 10vh; top: 0;">
+        <h4 style="color: white; padding-top: 1em;" align='center'>Chats</h4>
+        <hr style="color: black;">
+      </div>
+      <!-- Chat List -->
+      <div class="container-fluid overflow-auto" style="height: 77vh; width: 100%;">
+        <div class="p-2" style="overflow: hidden;">
+          <ul class="list-group list-group-light">
+            {% for x in followers %}
+            <div class="row">
+              <a class="btn btn-link btn-rounded btn-sm" href="{% url 'chatDisp' x.follower %}" role="button"
+                style="text-decoration: none; margin-left: 1em;" data-mdb-ripple-init>
+                <li
+                  class="list-group-item list-group-item-action px-3 border-0 d-flex justify-content-between align-items-center text-light hover-overlay hover-zoom hover-shadow ripple"
+                  style="background-color: #eb6d6d; width: 100%;">
+                  <div class="d-flex align-items-center" style="padding-left: 1em;">
+                    {% for y in pfp2 %}
+                        {% if x.follower == y.user %}
+                    <img
+                      src="{{y.pfp.url}}"
+                      alt="" style="height: 60px; width: 60px;" class="rounded-circle" />
+                        {% endif %}
+                      {% endfor %}
+                    <div class="ms-3">
+                      <p class="fw-bold mb-1" align="left">{{x.follower.first_name}} {{x.follower.last_name}}</p>
+                      {% for y in online %}
+                        {% if x.follower == y.user and y.online == True %}
+                          <p class="mb-0" align="left"><i class="fas fa-circle" style="color: greenyellow;"></i> Online</p>
+                        
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </li>
+              </a>
+            </div>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!-- Chat List -->
+    </div>
+    <div class="col-md-8 p-0" style="overflow: hidden;">
+      <!-- Chats Display -->
+      {% for z in reciever %}
+      <div class="row" style="height: 10vh; background-color: #eb6d6d; top: 0;">
+        <div class="col-md-1" style="padding: 0.5em 0 1em 1.5em;">
+          <img
+          src="{{disp.pfp.url}}"
+          alt='profile pic' style="border-radius: 5em; border: white; height: 50px; width: 50px">
+        </div>
+        <div class="col-md-11 p-4" style="color: white;">
+          <p><b>{{z.first_name}} {{z.last_name}}</b></p>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- messages -->
+      <div class="container-fluid overflow-auto" style="height: 67vh; width: 100%; overflow: hidden;">
+        <div class="p-2" style="overflow: hidden;">
+          {% for x in msg %}
+              {% if not x.sender == user %}
+                <div class="row" align="left">
+                  <span class="time" style="padding-left: 1.5em;">{{x.datetime}}</span>
+                  <span class="received">
+                    <p>{{x.message}}</p>
+                  </span>
+                </div>
+              {% else %}
+                <div class="row" align="right">
+                  <span class="time" style="padding-right: 1.5em;">{{x.datetime}}</span>
+                  <span class="sent">
+                    <p>{{x.message}}</p>
+                  </span>
+                </div>
+              {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <!-- messages -->
+      <!-- Chats Display -->
+
+      <!-- Chat input -->
+      <div class="row" style="margin-left: 1px;">
+        {% for z in reciever %}
+        <div class="container bg-light py-3" style="border-top: 1px solid black;">
+          <div class="container">
+            <form class="row g-3 align-items-center" method="post" action="{% url 'msgSend' z.username %}">
+              {% csrf_token %}
+              <div class="col">
+                <input type="text" class="form-control" name="msg" placeholder="Type your message..." autocomplete="off">
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary rounded-circle"><i class="bi bi-telegram"></i></button>
+              </div>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- Chat input -->
+
+
+  </div>
+</div>
+</div>
+{% endblock %}

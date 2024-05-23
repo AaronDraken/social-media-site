@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Create Post {% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card" style='background-color: #060a42; color: white'>
+                <div class="card-header" align='center'>
+                    <h3>Create New Post</h3>
+                    <hr style="color: burlywood;">
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <textarea class="form-control" id="caption" name="caption" rows="3" placeholder="Enter Caption here..."></textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="community" name="community" aria-label="Floating label select example">
+                                        {% for x in community %}
+                                        <option value="{{x.name}}">{{x.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="community">Select Community</label>
+                                </div>
+                        </div>
+                        <div class="input-group mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="fileType" name="fileType" aria-label="Floating label select example">
+                                        <option value="None">None</option>
+                                        <option value="Video">Video</option>
+                                        <option value="Image">Image</option>
+                                    </select>
+                                    <label for="fileType">Select File Type</label>
+                                </div>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" type="file" name="file" id="file" style="display: none;">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </form>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        fileTypeSelection=document.getElementById('fileType')
+        fileInput=document.getElementById('file')
+        fileTypeSelection.addEventListener('change',function() {
+            if (fileTypeSelection.value=='Image'){
+                file.setAttribute('accept','image/png, image/jpeg')
+                fileInput.style.display='block'
+            }
+            else if (fileTypeSelection.value=='Video') {
+                file.setAttribute('accept','video/mp4')
+                fileInput.style.display='block'
+            }
+            else{
+                fileInput.style.display='none'
+            }
+
+        })
+</script>
+{% endblock %}

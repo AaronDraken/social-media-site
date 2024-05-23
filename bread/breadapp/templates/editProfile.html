@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %} RADIANT | Update Profile {% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card" style='background-color: #060a42; color: white'>
+                <div class="card-header" align='center'>
+                    <h3>Update Profile</h3>
+                    {{profile.user.username}}
+                    <hr style="color: burlywood;">
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="username" name="username" value="{{profile.user.username}}" placeholder="Enter your username">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="bio" name="bio" value="{{profile.bio}}" placeholder="Enter Your Bio Here...">
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" type="file" name="pfp" id="pfp" accept="image/png, image/jpeg">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
